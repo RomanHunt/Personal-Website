@@ -1,0 +1,56 @@
+<div *ngIf="loaded" class="hero-section flex-grow-1">
+  <div class="container py-5 primary-text">
+    <h1>Account Settings</h1>
+    <form [formGroup]="model" (ngSubmit)="submitRequest()" class="p-5">
+      <div class="row">
+        <div class="col-lg-6 mb-3">
+          <div class="row">
+            <label class="col-lg-4" for="userName">Username</label>
+            <input class="col-lg-4 user-input" id="userName"
+                   type="text"
+                   formControlName="userName"
+                   placeholder="Edit Username"
+                   required>
+          </div>
+          <div class="actions mt-5">
+            <button class="user-menu-button px-3" type="submit" [disabled]="model.invalid || confirming">Update Settings</button>
+          </div>
+
+
+        </div>
+        <div class="col-lg-6">
+          <!-- Avatar Display Section -->
+          <div *ngIf="userSettings.avatar" class="avatar-wrapper">
+            <!-- If avatar data exists, prepend the data URL scheme for Base64 JPEG -->
+            <img [src]="'data:image/jpeg;base64,' + userSettings.avatar"
+                 alt="User Avatar"
+                 style="width: 128px; height: 128px; border-radius: 50%; object-fit: cover;" />
+          </div>
+
+          <!-- Custom Upload Trigger -->
+          <div class="upload-actions" style="margin-top: 10px;">
+            <!-- Hidden native file input restricted to images only -->
+            <input type="file"
+                   #fileInput
+                   (change)="onFileSelected($event)"
+                   accept="image/*"
+                   style="display: none;" />
+
+            <!-- Button that clicks the hidden input programmatically -->
+            <button class="user-menu-button px-3 mt-3" type="button" (click)="fileInput.click()">Change Avatar</button>
+          </div>
+        </div>
+      </div>
+
+      @if (errorMsg) {
+      <div class="mb-3" style="color:white">
+        {{errorMsg}}
+      </div>
+      }
+
+
+    </form>
+  </div>
+</div>
+
+

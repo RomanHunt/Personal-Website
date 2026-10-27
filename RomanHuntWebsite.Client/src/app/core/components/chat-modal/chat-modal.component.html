@@ -1,0 +1,159 @@
+<dialog #dialogElement (cancel)="$event.preventDefault(); close()" class="chat-modal">
+
+  <div class="d-flex bottom-border">
+    <h4 *ngIf="opened" class="text-center flex-fill">{{chat.chatName}}</h4>
+    <button type="button" class="fa-solid fa-x ms-auto close-x" (click)="close()" aria-label="Close"></button>
+  </div>
+
+  <form *ngIf="opened && !isMobile" [formGroup]="model" (ngSubmit)="submitRequest()" class="p-2">
+    <div class="mb-3 chat-message-list">
+      <div *ngFor="let message of messages">
+        <div class="row chat-message">
+          <div class="col-lg-3 col-6 p-3 text-start d-flex">
+            <div>
+              <div class="d-flex justify-content-center mt-2 me-2 chat-message-avatar-holder">
+                @if (avatarMappings.get(message.userId); as userAvatar) {
+                <img [src]="'data:image/jpeg;base64,' + userAvatar"
+                     alt="User Avatar"
+                     class="user-avatar" />
+                }
+              </div>
+              <div>
+                {{message.userName}}
+              </div>
+              <div class="small fst-italic">
+                {{ message.lastUpdated | date: 'M/d/yy, h:mm a'}}
+              </div>
+              <div *ngIf="message.userId === userId">
+                <button *ngIf="editingMessageId !== message.id" class="chat-message-edit" type="button" (click)="editMessage(message.id)">Edit</button>
+                <button *ngIf="editingMessageId === message.id" class="chat-message-edit" type="button" (click)="cancelEdit()">Cancel Edit</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-9 col-6 p-3 text-start" [innerHtml]="message.text"></div>
+        </div>
+      </div>
+    </div>
+    <div class="pagination-controls mb-3">
+      <button class="chat-message-edit" type="button" (click)="changePage(currentPage - 1)"
+              [disabled]="currentPage === 0 || confirming">
+        Older
+      </button>
+      <span class="px-4">Page {{currentPage + 1}} of {{maxPage + 1}}</span>
+      <button class="chat-message-edit" type="button"
+              [disabled]="confirming || currentPage >= maxPage" (click)="changePage(currentPage + 1)">
+        Newer
+      </button>
+    </div>
+    <div class="mb-3">
+      <div class="editor-wrap w-100">
+        <quill-editor #myEditor formControlName="message"
+                      [modules]="editorConfig"
+                      bounds="self"
+                      (onSelectionChanged)="onSelection($event)"
+                      (onFocus)="onEditorFocus($event)"
+                      placeholder="">
+        </quill-editor>
+      </div>
+    </div>
+
+    @if (errorMsg) {
+    <div class="mb-3" style="color:orange">
+      {{errorMsg}}
+    </div>
+    }
+    <div class="actions row">
+      <!-- type="button" prevents it from accidentally submitting the form -->
+      <button class="col-md-4 user-menu-button" type="button" (click)="close()">Close</button>
+      <!-- disabled unless the form passes all your Validators.required checks -->
+      <button *ngIf="userId" class="col-md-4 ms-auto user-menu-button" type="submit" [disabled]="model.invalid || confirming">Submit</button>
+      <span *ngIf="!userId ms-auto" class="col-md-4">You must be logged in to post.</span>
+    </div>
+  </form>
+
+
+
+  <form *ngIf="opened && isMobile" [formGroup]="model" (ngSubmit)="submitRequest()" class="p-2">
+    <div class="mb-3 chat-message-list">
+      <div *ngFor="let message of messages">
+        <div class="row chat-message">
+          <div class="col-lg-3 col-6 p-3 text-start d-flex">
+            <div>
+              <div class="d-flex justify-content-center mt-2 me-2 chat-message-avatar-holder">
+                @if (avatarMappings.get(message.userId); as userAvatar) {
+                <img [src]="'data:image/jpeg;base64,' + userAvatar"
+                     alt="User Avatar"
+                     class="user-avatar" />
+                }
+              </div>
+              <div>
+                {{message.userName}}
+              </div>
+              <div class="small fst-italic">
+                {{ message.lastUpdated | date: 'M/d/yy, h:mm a'}}
+              </div>
+              <div *ngIf="message.userId === userId">
+                <button *ngIf="editingMessageId !== message.id" class="chat-message-edit" type="button" (click)="editMessage(message.id)">Edit</button>
+                <button *ngIf="editingMessageId === message.id" class="chat-message-edit" type="button" (click)="cancelEdit()">Cancel Edit</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-9 col-6 p-3 text-start" [innerHtml]="message.text"></div>
+        </div>
+      </div>
+
+
+
+      <div class="pagination-controls mb-3">
+        <button class="chat-message-edit" type="button" (click)="changePage(currentPage - 1)"
+                [disabled]="currentPage === 0 || confirming">
+          Older
+        </button>
+        <span class="px-4">Page {{currentPage + 1}} of {{maxPage + 1}}</span>
+        <button class="chat-message-edit" type="button"
+                [disabled]="confirming || currentPage >= maxPage" (click)="changePage(currentPage + 1)">
+          Newer
+        </button>
+      </div>
+      <div class="mb-3">
+        <div class="editor-wrap w-100">
+          <quill-editor #mobileEditor formControlName="message"
+                        [modules]="editorConfig"
+                        bounds="self"
+                        (onSelectionChanged)="onSelection($event)"
+                        (onFocus)="onEditorFocus($event)"
+                        placeholder="">
+          </quill-editor>
+        </div>
+      </div>
+
+      @if (errorMsg) {
+      <div class="mb-3" style="color:orange">
+        {{errorMsg}}
+      </div>
+      }
+      <div class="actions row desktop-only">
+        <!-- type="button" prevents it from accidentally submitting the form -->
+        <button class="col-md-4 user-menu-button" type="button" (click)="close()">Close</button>
+        <!-- disabled unless the form passes all your Validators.required checks -->
+        <button *ngIf="userId" class="col-md-4 ms-auto user-menu-button" type="submit" [disabled]="model.invalid || confirming">Submit</button>
+        <span *ngIf="!userId ms-auto" class="col-md-4 ">You must be logged in to post.</span>
+      </div>
+
+      <div class="actions mobile-only">
+        <!-- type="button" prevents it from accidentally submitting the form -->
+        <button class="user-menu-button w-75 m-3" type="button" (click)="close()">Close</button>
+        <!-- disabled unless the form passes all your Validators.required checks -->
+        <button *ngIf="userId" class="ms-auto user-menu-button w-75 mx-3 mt-3" type="submit" [disabled]="model.invalid || confirming">Submit</button>
+        <span *ngIf="!userId ms-auto" class="">You must be logged in to post.</span>
+      </div>
+
+    </div>
+  </form>
+
+
+
+
+
+</dialog>
+

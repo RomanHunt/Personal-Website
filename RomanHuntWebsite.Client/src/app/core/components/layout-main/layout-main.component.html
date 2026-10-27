@@ -1,0 +1,110 @@
+<div class="nav-bar  d-flex">
+  <div class="align-items-center h-100 d-flex ms-3">
+    <span class="fw-bold">
+      Roman Hunt // Software Engineer
+    </span>
+  </div>
+
+  <!-- Desktop Navigation Menu (Hidden on mobile) -->
+  <div class="align-items-center justify-content-center d-flex flex-fill desktop-only">
+    <ul class="text-left p-0 nav d-flex h-100">
+      <li class="active h-100 d-flex align-items-center">
+        <a class="nav-link text-pointer" href="/home">Home</a>
+      </li>
+      <li class="active h-100 d-flex align-items-center ">
+        <a class="nav-link text-pointer" href="/about">About</a>
+      </li>
+      <li class="active h-100 d-flex align-items-center">
+        <a class="nav-link text-pointer" href="/resume">Résumé</a>
+      </li>
+      <li class="active h-100 d-flex align-items-center">
+        <a class="nav-link text-pointer" href="/contact">Contact</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="d-flex ms-auto me-3 desktop-only">
+    <ng-container *ngIf="userSession$ | async as session; else loggedOutTpl">
+      <!-- Show this if userName exists in cookies -->
+      <div *ngIf="session.userName" class="auth-links d-flex">
+        <div class="active h-100 d-flex align-items-center nav-user">
+          <a class="nav-link text-pointer" href="/user-settings">{{ session.userName }}</a>
+        </div>
+        <div class="active h-100 d-flex align-items-center nav-link nav-user text-pointer" (click)="logout()">
+          Logout
+        </div>
+      </div>
+      <div *ngIf="!session.userName" class="auth-links d-flex">
+        <div class="active h-100 d-flex align-items-center nav-link text-pointer nav-user" (click)="openLogin()">
+          Log In
+        </div>
+        <div class="active h-100 d-flex align-items-center nav-link text-pointer nav-user" (click)="openCreateUser()">
+          Sign Up
+        </div>
+      </div>
+    </ng-container>
+    <!-- Template to show when cookies are empty -->
+    <ng-template #loggedOutTpl>
+      <div class="active h-100 d-flex align-items-center nav-link text-pointer nav-user" (click)="openLogin()">
+        Log In
+      </div>
+      <div class="active h-100 d-flex align-items-center nav-link text-pointer nav-user" (click)="openCreateUser()">
+        Sign Up
+      </div>
+    </ng-template>
+  </div>
+
+
+  <!-- Mobile Hamburger Button (Hidden on desktop) -->
+  <button class="menu-toggle mobile-only fa-solid fa-bars fs-1 ms-auto me-2" (click)="toggleMenu()" aria-label="Toggle navigation">
+  </button>
+
+  <!-- Full-Screen Mobile Overlay Menu -->
+  <div class="mobile-overlay" [class.active]="isMenuOpen">
+    <div class="overlay-links w-100">
+      <a routerLink="/home" (click)="closeMenu()">Home</a>
+      <a routerLink="/about" (click)="closeMenu()">About</a>
+      <a routerLink="/resume" (click)="closeMenu()">Résumé</a>
+      <a routerLink="/contact" (click)="closeMenu()">Contact</a>
+
+      <ng-container *ngIf="userSession$ | async as session; else loggedOutTplMobile">
+        <!-- Show this if userName exists in cookies -->
+        <div *ngIf="session.userName" class="auth-links d-flex mt-5 row h-100 w-100">
+          <div class="active h-100 nav-user col-6">
+            <a class="nav-link text-pointer" href="/user-settings">{{ session.userName }}</a>
+          </div>
+          <div class="active h-100 nav-link nav-user text-pointer col-6" (click)="logout()">
+            Logout
+          </div>
+        </div>
+        <div *ngIf="!session.userName" class="auth-links d-flex mt-5 row h-100 w-100">
+          <div class="active col-6 align-items-center nav-link text-pointer nav-user" (click)="openLogin()">
+            Log In
+          </div>
+          <div class="active col-6 align-items-center nav-link text-pointer nav-user" (click)="openCreateUser()">
+            Sign Up
+          </div>
+        </div>
+      </ng-container>
+      <!-- Template to show when cookies are empty -->
+      <ng-template #loggedOutTplMobile>
+        <div class="h-100 mt-5 row auth-links w-100">
+          <div class="active d-flex align-items-center nav-link text-pointer nav-user col-6" (click)="openLogin()">
+            Log In
+          </div>
+          <div class="active d-flex align-items-center nav-link text-pointer nav-user col-6" (click)="openCreateUser()">
+            Sign Up
+          </div>
+        </div>
+
+      </ng-template>
+    </div>
+  </div>
+
+
+
+
+</div>
+
+<app-create-user-modal></app-create-user-modal>
+<app-login-modal></app-login-modal>
