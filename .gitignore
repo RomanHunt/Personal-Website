@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Ignore local configuration files containing secrets
+/RomanHuntWebsite.Server/appsettings.local.json
