@@ -42,4 +42,4 @@ testem.log
 Thumbs.db
 
 # Ignore local configuration files containing secrets
-appsettings.local.json
+/RomanHuntWebsite.Server/appsettings.local.json
