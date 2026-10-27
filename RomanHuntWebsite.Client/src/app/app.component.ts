@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, inject, ViewEncapsulation } from '@angular/core';
 import { GeneralService } from '../app/core/services/general.service';
 import * as Models from '../app//shared/models/models';
 import { AuthService, UserSession } from '../app/core/services/auth.service';
@@ -15,10 +15,11 @@ import {
   selector: 'app-root',
   templateUrl: './app.component.html',
   standalone: false,
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
+  encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements OnInit {
-  isCollapsed = false;
+  isCollapsed = true;
   private cdr = inject(ChangeDetectorRef);
   confirming = false;
   model!: UntypedFormGroup;
