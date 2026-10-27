@@ -73,11 +73,11 @@ export class ChatModalComponent implements OnInit {
     this.cdr.detectChanges();
 
     setTimeout(() => {
-      if (this.editorComponent.quillEditor)
+      if (this.editorComponent?.quillEditor)
       {
         this.editorComponent.quillEditor.focus();
       }
-      if (this.mobileEditorComponent.quillEditor) {
+      if (this.mobileEditorComponent?.quillEditor) {
         this.mobileEditorComponent.quillEditor.focus();
       }     
 
