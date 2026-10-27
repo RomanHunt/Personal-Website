@@ -1,0 +1,6 @@
+@roman_hunt_website.Server_HostAddress = http://localhost:5111
+
+GET {{roman_hunt_website.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

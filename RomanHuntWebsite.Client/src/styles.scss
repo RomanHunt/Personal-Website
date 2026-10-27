@@ -1,0 +1,604 @@
+@import 'bootstrap/scss/bootstrap';
+
+
+$primary-bg: #07111f;
+$secondary-bg: #233d52;
+$tertiary-bg: #16354a;
+$primary-text: #b7c5d3;
+$secondary-text: #8bd7f5;
+$primary-font: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+$secondary-font: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+
+app-root {
+  padding: 0 !important;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.min-vh-100 {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.nav-bar {
+  height: 60px;
+  padding: 0;
+  background-color: $tertiary-bg;
+  color: $primary-text;
+  font-family: $primary-font;
+  border-bottom: solid 2px $secondary-text;
+}
+
+.menu-list {
+  list-style: none;
+  margin: 0
+}
+
+.nav-user {
+  color: $primary-text;
+  transition: background-color 0.5s ease-in-out;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.nav-user:hover {
+  background-color: $primary-bg;
+  color: #EEE;
+}
+
+.nav-bar {
+  a, a.nav-link.active {
+    color: $primary-text;
+  }
+
+  a.nav-link:hover {
+    color: #EEE;
+  }
+
+  li {
+    transition: background-color 0.5s ease-in-out;
+  }
+
+  li:hover {
+    background-color: $primary-bg;
+  }
+}
+
+.content-container {
+  margin-top: 60px;
+  height: calc(100vh - 60px); /* Strictly fills the exact remaining screen height */
+  overflow-y: auto;
+  background-color: $primary-bg;
+}
+
+// Force Angular's routing nodes to stretch 100% downstream
+.content-container > *:not(router-outlet) {
+  display: flex !important;
+  flex-direction: column !important;
+  flex-grow: 1 !important;
+  min-height: 100%;
+  width: 100%;
+}
+
+.hero-section {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  width: 100%;
+  background-color: $primary-bg;
+  //  background-image: url('assets/images/Blank_Background.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.about-photo {
+    border: solid $secondary-text 1px;
+ // width: 400px;
+  //float:left;
+  
+  //background-size: cover;
+  //background-position: center;
+  //background-repeat: no-repeat;
+}
+
+.hero-section-home {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  width: 100%;
+  background-image: url('assets/images/Space_A.png');
+  background-size: cover;
+//  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.home-text {
+  font-family: $secondary-font;
+  color: $primary-text;
+  font-size: 5em;
+  text-align: left;
+  -webkit-text-stroke: 3px $primary-bg;
+  font-weight: bold;  
+}
+
+.hero-section h2 {
+  margin: 0;
+  padding-top: 15px;
+  text-align: center;
+}
+
+.fixed-top-banner {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1030;
+  height: 60px;
+}
+
+.about-paragraph {
+  color: $primary-text;
+  font-family: $primary-font;
+  font-size: 2em;
+//  text-align:start;
+//  background-color: $primary-bg;
+}
+
+#LinkedIn {
+  margin-top: 20px;
+}
+
+#LinkedIn img {
+  width: 70px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.primary-text {
+  color: $primary-text;
+}
+
+.secondary-text{
+    color: $secondary-text;
+}
+
+.text-pointer {
+  cursor: pointer;
+}
+
+.user-modal {
+  width: 500px;
+  border: solid 2px $primary-text;
+  color: $primary-text;
+  background-color: $primary-bg;
+
+  input {
+    //background-color: $secondary-bg !important;
+    //color: white !important;
+  }
+
+}
+
+.user-input {
+  background-color: $secondary-bg !important;
+  color: white !important;
+}
+
+.user-menu-button {
+  border-radius: 15px;
+}
+
+.user-menu-button:enabled:hover {
+  color: $primary-text;
+  background-color: $secondary-bg;
+  cursor: pointer;
+}
+///////////
+
+$sidebar-width: 250px;
+$sidebar-collapsed-width: 60px;
+$transition-speed: 0.3s ease-in-out;
+
+/*
+.app-container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+*/
+
+.sidebar {
+  width: $sidebar-width;
+  background-color: $tertiary-bg;
+  color: $primary-text;
+  transition: width $transition-speed;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  padding: 1rem;
+  border-right: solid 2px $secondary-text;
+  margin-top: 60px;
+  // Structural adjustment for collapsed state
+
+  &.collapsed {
+    width: $sidebar-collapsed-width;
+
+    .sidebar-menu .menu-item {
+      justify-content: center;
+    }
+  }
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  height: 30px;
+
+  .toggle-btn {
+    background: none;
+    border: none;
+    color: $primary-text;
+    cursor: pointer;
+    font-size: 1.2rem;
+  }
+}
+
+.sidebar-content {
+  background-color: $primary-bg;
+  height: calc(100vh - 286px);
+  max-height: 100%;
+  min-height: 0;
+}
+
+.sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: $secondary-text;
+    text-decoration: none;
+    padding: 0.75rem;
+    border-radius: 8px;
+    transition: background 0.2s;
+
+    &:hover {
+      background-color: $secondary-bg;
+      color: $primary-text;
+    }
+
+    .icon {
+      font-size: 1.25rem;
+    }
+  }
+}
+
+.chat-folder {
+  background-color: $tertiary-bg;
+  border-radius: 10px;
+  cursor: pointer;
+  height: 40px; /* Set your desired button height */
+  max-height: 40px; /* Ensure it never grows */
+  line-height: 40px; /* Vertically center single-line text */
+  padding: 0 16px; /* Control horizontal padding only */
+  white-space: nowrap; /* Keep text on a single line */
+  overflow: hidden; /* Hide extra text if it exceeds width */
+  text-overflow: ellipsis; /* Optional: show ... if text is too long */
+  box-sizing: border-box; /* Include padding in the height */
+  text-align: left;
+}
+
+.chat-folder:hover{
+    border: solid 2px $primary-text;
+}
+
+.chat {
+  background-color: $secondary-bg;
+  border-radius: 10px;
+  cursor: pointer;
+  height: 100px; /* Set your desired button height */
+  max-height: 100px; /* Ensure it never grows */
+  line-height: 40px; /* Vertically center single-line text */
+  padding: 0 16px; /* Control horizontal padding only */
+  white-space: nowrap; /* Keep text on a single line */
+  overflow: hidden; /* Hide extra text if it exceeds width */
+  text-overflow: ellipsis; /* Optional: show ... if text is too long */
+  box-sizing: border-box; /* Include padding in the height */
+  text-align: left;
+}
+
+.chat:hover {
+  border: solid 2px $primary-text;
+}
+
+.chat-message {
+  background-color: $primary-bg;
+  margin: 10px;
+  //width: 100% !important;
+  max-width: 100%;
+  white-space: pre-wrap !important; /* Forces line breaks on spaces */
+  word-break: break-word !important; /* Breaks long strings/URLs so they don't bleed out */
+  overflow-x: hidden !important; /* Disables horizontal stretching completely */
+  box-sizing: border-box;
+  border-bottom: solid 2px $primary-text;
+}
+
+
+.sidebar-create-button {
+  height: 40px; /* Set your desired button height */
+  max-height: 40px; /* Ensure it never grows */
+  line-height: 40px; /* Vertically center single-line text */
+  padding: 0 16px; /* Control horizontal padding only */
+  white-space: nowrap; /* Keep text on a single line */
+  overflow: hidden; /* Hide extra text if it exceeds width */
+  text-overflow: ellipsis; /* Optional: show ... if text is too long */
+  box-sizing: border-box; /* Include padding in the height */
+  background-color: $primary-bg;
+  color: $primary-text;
+}
+
+.sidebar-list {
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex-grow: 1;
+  flex-shrink: 1;
+  min-height: 0;
+  display: block;
+}
+
+.chat-modal {
+  width: 1200px;
+  max-height: 900px;
+  border: solid 2px $primary-text;
+  //  background-image: url('assets/images/Blank_Background.jpg');
+  background-color: $primary-bg;
+  color: $primary-text;
+}
+
+.chat-message-list {
+  overflow: auto;
+  max-height: 380px;
+//  background-color: $secondary-bg;
+}
+
+.chat-message-avatar-holder {
+  height: 128px;
+  width: 128px;
+  background-color: none;
+}
+
+
+.ql-toolbar {
+  pointer-events: auto !important;
+  position: relative;
+  z-index: 1050; /* Ensure it floats safely above any hidden modal wrappers */
+  background-color: $primary-text;
+}
+
+.ql-toolbar button {
+  pointer-events: auto !important;
+}
+
+.ql-container {
+  min-height: 150px; /* Adjust this to match your original 5 rows */
+  // color: black;
+  overflow: auto;
+  max-height: 150px;
+}
+/* 1. Prevent the outer editor wrapper from expanding past its parent */
+.ngx-quill-editor, quill-editor {
+  display: block;
+  width: 100% !important;
+  max-width: 100%;
+  box-sizing: border-box;
+  background-color: $secondary-bg;
+}
+/* 2. Force the actual typing canvas to wrap text and hide horizontal overflow */
+.ql-container.ql-snow, .ql-editor {
+  width: 100% !important;
+  max-width: 100%;
+  white-space: pre-wrap !important; /* Forces line breaks on spaces */
+  word-break: break-word !important; /* Breaks long strings/URLs so they don't bleed out */
+  overflow-x: hidden !important; /* Disables horizontal stretching completely */
+  box-sizing: border-box;
+}
+
+.ql-editor.ql-blank::before {
+  color: white;
+}
+
+.bottom-border{
+    border-bottom: solid 2px $primary-text;
+}
+
+.close-x{
+    background: none;
+    border: none;
+    color: $primary-text;
+    height: 100%;
+    padding-top: 5px;
+}
+
+.chat-message-edit {
+  width: 100px;
+  margin-top: 15px;
+  background-color: $secondary-bg;
+  color: $primary-text;
+  border-radius: 15px;
+}
+
+.chat-message-edit:enabled:hover {
+  background-color: $primary-bg;
+  cursor: pointer;
+}
+
+/* Pure CSS circular animation spinner */
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid $secondary-text;
+  border-top: 4px solid $primary-text;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.slideshow-container {
+  position: relative;
+  width: 100%;
+//  height: 100%; /* Adjust based on your layout */
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.slide-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures images scale cleanly without stretching */
+}
+
+
+.user-avatar {
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+
+// --- Desktop & Mobile Display Toggling ---
+
+@media (min-width: 769px){
+  .mobile-only {
+    display: none!important;
+  }
+}
+
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none !important;
+  }
+
+  .mobile-only {
+    display: block !important;
+  }
+
+  .sidebar {
+    width: 100%;
+    &.collapsed {
+      width: $sidebar-collapsed-width;
+    }
+  }
+
+  .chat-folder{
+      height: 80px;
+      max-height: 80px;
+      line-height: 80px;
+      margin-bottom: 30px;
+  }
+
+  .user-avatar, .chat-message-avatar-holder {
+    width: 64px;
+    height: 64px;
+  }
+
+  .chat-message-list{
+      overflow: auto;
+  }
+
+  .chat-modal{
+      width: 100%;
+      margin: 0;
+      max-width: 100%;
+  }
+}
+
+// --- Hamburger Button & CSS Animation ---
+.menu-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+//  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 60px;
+  height: 60px;
+  z-index: 1001; // Stay above overlay
+  color: $primary-text;
+  
+}
+
+// --- Full Screen Mobile Overlay ---
+.mobile-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: $primary-bg;
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // Slide down animation transitions
+  transform: translateY(-100%);
+  transition: transform 0.4s ease-in-out;
+
+  &.active {
+    transform: translateY(0);
+  }
+
+  .overlay-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+
+    a, div {
+      color: $primary-text;
+      font-size: 1.8rem;
+      text-decoration: none;
+      letter-spacing: 1px;
+    }
+
+
+
+    .mobile-user-actions {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      border-top: 1px solid $secondary-font;
+      padding-top: 20px;
+      width: 150px;
+    }
+  }
+}

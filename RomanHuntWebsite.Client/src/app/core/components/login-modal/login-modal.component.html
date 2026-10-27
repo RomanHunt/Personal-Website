@@ -1,0 +1,66 @@
+<dialog #dialogElement (cancel)="$event.preventDefault(); close()" class="user-modal">
+
+  <div class="d-flex">
+    <button type="button" class="fa-solid fa-x ms-auto close-x" (click)="close()" aria-label="Close"></button>
+  </div>
+  <h2>Log In</h2>
+
+  <form [formGroup]="model" (ngSubmit)="submitRequest()" class="p-5">
+    <div class="mb-3 row">
+      <label class="col-lg-4" for="userName">Username</label>
+      <input class="col-lg-8 user-input" id="userName"
+             type="text"
+             formControlName="userName"
+             placeholder="Enter Username"
+             required>
+    </div>
+    <div class="mb-3 row">
+      <label class="col-lg-4" for="password">Password</label>
+      <input class="col-lg-8 user-input" id="password"
+             type="password"
+             formControlName="password"
+             placeholder="Enter Password"
+             required>
+    </div>
+
+    @if (errorMsg) {
+    <div class="mb-3" style="color:white">
+      {{errorMsg}}
+    </div>
+    }
+
+    <div class="actions row">
+      <!-- type="button" prevents it from accidentally submitting the form -->
+      <button class="col-lg-4 mt-5 user-menu-button" type="button" (click)="close()">Close</button>
+      <!-- disabled unless the form passes all your Validators.required checks -->
+      <button class="col-lg-4 mt-5 ms-auto user-menu-button" type="submit" [disabled]="model.invalid || confirming">Submit</button>
+    </div>
+  </form>
+
+  <form [formGroup]="emailModel" class="p-5">
+
+    <div class="mb-3">
+      Forget your user name or password? <span class="desktop-only">Enter the email address associated with your account to request a change.</span>
+    </div>
+
+    <div class="mb-3 row">
+      <label class="col-lg-4" for="email">Email Address</label>
+      <input class="col-lg-8 user-input" id="email"
+             type="email"
+             formControlName="email"
+             placeholder="Enter Email Address"
+             required>
+    </div>
+
+    <div class="actions row mt-3">
+      <button class="col-lg-4 mt-5 user-menu-button" (click)="forgotUserName()" [disabled]="emailModel.invalid">Request Username </button>
+      <button class="col-lg-4 mt-5 ms-auto user-menu-button" (click)="forgotPassword()" [disabled]="emailModel.invalid">Request Password Change</button>
+    </div>
+    @if (emailMsg) {
+    <div class="mt-3 mb-3">
+      {{emailMsg}}
+    </div>
+    }
+  </form>
+</dialog>
+

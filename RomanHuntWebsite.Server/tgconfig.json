@@ -1,0 +1,8 @@
+{
+  "assemblies": [
+    "bin/Debug/net8.0/RomanHuntWebsite.Server.dll"
+  ],
+  "outputPath": "../RomanHuntWebsite/RomanHuntWebsite.Client/src/app/shared/models",
+  "clearOutputDirectory": true,
+  "exportTypesAsInterfacesByDefault": true
+}

@@ -1,0 +1,53 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>RomanHuntWebsite.Server</RootNamespace>
+    <SpaRoot>..\RomanHuntWebsite.Client\</SpaRoot>
+    <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
+    <SpaProxyServerUrl>https://localhost:4200</SpaProxyServerUrl>
+    <UserSecretsId>71d2a68b-6981-4243-8a79-8a18fdef43cc</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="tsconfig.app.json" />
+    <Content Remove="tsconfig.spec.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="tgconfig.app.json" />
+    <None Include="tgconfig.spec.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Handlebars.Net" Version="2.4.3" />
+    <PackageReference Include="HtmlSanitizer" Version="9.2.1039" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.30" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaProxy">
+      <Version>8.*-*</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.12" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.12" />
+    <PackageReference Include="Namotion.Reflection" Version="2.1.1" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" />
+    <PackageReference Include="Resend" Version="0.23.0" />
+    <PackageReference Include="SkiaSharp" Version="4.153.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+    <PackageReference Include="TypeGen" Version="7.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RomanHuntWebsite.Client\RomanHuntWebsite.Client.esproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+
+	<Target Name="GenerateTypeScriptModels" AfterTargets="AfterBuild" Condition="'$(Configuration)' == 'Debug'">
+		<Message Importance="high" Text="Running automated TypeGen generation task..." />
+		<Exec Command="dotnet $(OutputPath)$(AssemblyName).dll --typegen" LogStandardErrorAsError="true" />
+	</Target>	
+	
+</Project>
