@@ -34,6 +34,7 @@
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" />
     <PackageReference Include="Resend" Version="0.23.0" />
     <PackageReference Include="SkiaSharp" Version="4.153.1" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="4.154.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
     <PackageReference Include="TypeGen" Version="7.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
