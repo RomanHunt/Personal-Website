@@ -60,46 +60,50 @@
   </button>
 
   <!-- Full-Screen Mobile Overlay Menu -->
-  <div class="mobile-overlay" [class.active]="isMenuOpen">
-    <div class="overlay-links w-100">
-      <a routerLink="/home" (click)="closeMenu()">Home</a>
-      <a routerLink="/about" (click)="closeMenu()">About</a>
-      <a routerLink="/resume" (click)="closeMenu()">Résumé</a>
-      <a routerLink="/contact" (click)="closeMenu()">Contact</a>
+  <div *ngIf="loaded">
+    <div class="mobile-overlay" [class.active]="isMenuOpen">
+      <div class="overlay-links w-100">
+        <a routerLink="/home" (click)="closeMenu()">Home</a>
+        <a routerLink="/about" (click)="closeMenu()">About</a>
+        <a routerLink="/resume" (click)="closeMenu()">Résumé</a>
+        <a routerLink="/contact" (click)="closeMenu()">Contact</a>
 
-      <ng-container *ngIf="userSession$ | async as session; else loggedOutTplMobile">
-        <!-- Show this if userName exists in cookies -->
-        <div *ngIf="session.userName" class="auth-links d-flex mt-5 row h-100 w-100">
-          <div class="active h-100 nav-user col-6">
-            <a class="nav-link text-pointer" href="/user-settings">{{ session.userName }}</a>
+        <ng-container *ngIf="userSession$ | async as session; else loggedOutTplMobile">
+          <!-- Show this if userName exists in cookies -->
+          <div *ngIf="session.userName" class="auth-links d-flex mt-5 row h-100 w-100">
+            <div class="active h-100 nav-user col-6">
+              <a class="nav-link text-pointer text-center" href="/user-settings">{{ session.userName }}</a>
+            </div>
+            <div class="active h-100 nav-link nav-user text-center text-pointer col-6" (click)="logout()">
+              Logout
+            </div>
           </div>
-          <div class="active h-100 nav-link nav-user text-pointer col-6" (click)="logout()">
-            Logout
+          <div *ngIf="!session.userName" class="auth-links d-flex mt-5 row h-100 w-100">
+            <div class="active col-6 align-items-center nav-link text-pointer text-center nav-user" (click)="openLogin()">
+              Log In
+            </div>
+            <div class="active col-6 align-items-center nav-link text-pointer text-center nav-user" (click)="openCreateUser()">
+              Sign Up
+            </div>
           </div>
-        </div>
-        <div *ngIf="!session.userName" class="auth-links d-flex mt-5 row h-100 w-100">
-          <div class="active col-6 align-items-center nav-link text-pointer text-center nav-user" (click)="openLogin()">
-            Log In
+        </ng-container>
+        <!-- Template to show when cookies are empty -->
+        <ng-template #loggedOutTplMobile>
+          <div class="h-100 mt-5 row auth-links w-100">
+            <div class="active d-flex align-items-center nav-link text-pointer text-center nav-user col-6" (click)="openLogin()">
+              Log In
+            </div>
+            <div class="active d-flex align-items-center nav-link text-pointer text-center nav-user col-6" (click)="openCreateUser()">
+              Sign Up
+            </div>
           </div>
-          <div class="active col-6 align-items-center nav-link text-pointer text-center nav-user" (click)="openCreateUser()">
-            Sign Up
-          </div>
-        </div>
-      </ng-container>
-      <!-- Template to show when cookies are empty -->
-      <ng-template #loggedOutTplMobile>
-        <div class="h-100 mt-5 row auth-links w-100">
-          <div class="active d-flex align-items-center nav-link text-pointer text-center nav-user col-6" (click)="openLogin()">
-            Log In
-          </div>
-          <div class="active d-flex align-items-center nav-link text-pointer text-center nav-user col-6" (click)="openCreateUser()">
-            Sign Up
-          </div>
-        </div>
 
-      </ng-template>
+        </ng-template>
+      </div>
     </div>
   </div>
+
+
 
 
 

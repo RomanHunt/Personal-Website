@@ -68,6 +68,7 @@ export class ChatModalComponent implements OnInit {
       }
     });
 
+    this.currentPage = 0;
     this.messages = chat.messages;
     this.totalMessages = chat.totalMessages;
     this.checkScreenSize();
@@ -157,19 +158,27 @@ export class ChatModalComponent implements OnInit {
       pageNumber: this.maxPage
     };
 
+    const isEdit = this.editingMessageId && this.editingMessageId !== 0;
+
     this.generalSvc.createMessage(form).subscribe({
       next: result => {
         this.confirming = false;
         this.chat = result;
-        this.messages = result.messages;
         this.editingMessageId = undefined;
         this.totalMessages = result.totalMessages;
         this.model.reset()
-        this.cdr.detectChanges();
 
-        if (this.maxPage > this.currentPage) {
+        if (this.maxPage > this.currentPage && !isEdit) {
           this.changePage(this.maxPage);
         }
+        else if (isEdit) {
+          this.changePage(this.currentPage);
+        }
+        else {
+          this.messages = result.messages;
+        }
+
+        this.cdr.detectChanges();
 
       },
       error: error => {
@@ -222,6 +231,11 @@ export class ChatModalComponent implements OnInit {
   }
 
   get maxPage(): number {
+
+    if (this.totalMessages === 0) {
+      return 0;
+    }
+
     return Math.ceil(this.totalMessages / this.pageSize) - 1;
   }
 }

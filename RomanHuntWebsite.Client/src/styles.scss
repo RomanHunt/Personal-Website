@@ -8,6 +8,10 @@ $primary-text: #b7c5d3;
 $secondary-text: #8bd7f5;
 $primary-font: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 $secondary-font: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+$sidebar-width: 250px;
+$sidebar-collapsed-width: 60px;
+$transition-speed: 0.3s ease-in-out;
+
 
 app-root {
   padding: 0 !important;
@@ -213,9 +217,7 @@ html, body {
 }
 ///////////
 
-$sidebar-width: 250px;
-$sidebar-collapsed-width: 60px;
-$transition-speed: 0.3s ease-in-out;
+
 
 /*
 .app-container {
@@ -536,71 +538,7 @@ $transition-speed: 0.3s ease-in-out;
 }
 
 
-// --- Desktop & Mobile Display Toggling ---
 
-@media (min-width: 769px){
-  .mobile-only {
-    display: none!important;
-  }
-}
-
-@media (max-width: 768px) {
-  .desktop-only {
-    display: none !important;
-  }
-
-  .mobile-only {
-    display: block !important;
-  }
-
-  .sidebar {
-    width: 100%;
-    &.collapsed {
-      width: $sidebar-collapsed-width;
-    }
-  }
-
-  .chat-folder{
-      height: 80px;
-      max-height: 80px;
-      line-height: 80px;
-      margin-bottom: 30px;
-  }
-
-  .user-avatar, .chat-message-avatar-holder {
-    width: 64px;
-    height: 64px;
-  }
-
-  .chat-message-list{
-      overflow: auto;
-  }
-
-  .chat-modal{
-      width: 100%;
-      margin: 0;
-      max-width: 100%;
-  }
-
-  .about-paragraph{
-      font-size: 1.5em;
-      word-wrap: anywhere;
-  }
-
-  .home-text {
-    font-size: 2.5em;
-    -webkit-text-stroke: 1px $primary-bg;
-  }
-
-  .chat-message-list{
-      max-height: 100dvh;
-  }
-
-  .chat-modal{
-      max-height: 100dvh;
-  }
-
-}
 
 // --- Hamburger Button & CSS Animation ---
 .menu-toggle {
@@ -692,3 +630,77 @@ $transition-speed: 0.3s ease-in-out;
     word-break: break-all !important;
   }
   */
+
+// --- Desktop & Mobile Display Toggling ---
+
+
+@media (min-width: 769px) {
+  .mobile-only {
+    display: none !important;
+  }
+
+  .chat-modal {
+    //    height: 100%;
+    width: 100%;
+    max-height: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none !important;
+  }
+
+  .mobile-only {
+    display: block !important;
+  }
+
+  .sidebar {
+    width: 100%;
+
+    &.collapsed {
+      width: $sidebar-collapsed-width;
+    }
+  }
+
+  .chat-folder {
+    height: 80px;
+    max-height: 80px;
+    line-height: 80px;
+    margin-bottom: 30px;
+  }
+
+  .user-avatar, .chat-message-avatar-holder {
+    width: 64px;
+    height: 64px;
+  }
+
+  .chat-message-list {
+    overflow: auto;
+  }
+
+  .chat-modal {
+    width: 100%;
+    margin: 0;
+    max-width: 100%;
+  }
+
+  .about-paragraph {
+    font-size: 1.5em;
+    word-wrap: anywhere;
+  }
+
+  .home-text {
+    font-size: 2.5em;
+    -webkit-text-stroke: 1px $primary-bg;
+  }
+
+  .chat-message-list {
+    max-height: 100dvh;
+  }
+
+  .chat-modal {
+    max-height: 100dvh;
+    //    height: unset;
+  }
+}

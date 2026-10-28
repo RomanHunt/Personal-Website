@@ -22,7 +22,7 @@
                 {{message.userName}}
               </div>
               <div class="small fst-italic">
-                {{ message.lastUpdated | date: 'M/d/yy, h:mm a'}}
+                {{ message.lastUpdated | date: 'M/d/yyyy, h:mm a'}}
               </div>
               <div *ngIf="message.userId === userId">
                 <button *ngIf="editingMessageId !== message.id" class="chat-message-edit" type="button" (click)="editMessage(message.id)">Edit</button>

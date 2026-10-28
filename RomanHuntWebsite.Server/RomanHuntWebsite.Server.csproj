@@ -5,7 +5,8 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>RomanHuntWebsite.Server</RootNamespace>
-    <SpaRoot>..\RomanHuntWebsite.Client\</SpaRoot>
+    <SpaRoot>..\RomanHuntWebsite.Client\</SpaRoot>	  
+   <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
     <SpaProxyServerUrl>https://localhost:4200</SpaProxyServerUrl>
     <UserSecretsId>71d2a68b-6981-4243-8a79-8a18fdef43cc</UserSecretsId>
   </PropertyGroup>

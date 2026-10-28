@@ -17,6 +17,7 @@ export class LayoutMainComponent implements OnInit, OnDestroy {
   userSession$: Observable<UserSession>;
   subscription = new Subscription();
   isMenuOpen = false;
+  loaded = false;
 
   constructor(private authService: AuthService) {
     // Reference the observable stream directly
@@ -24,7 +25,7 @@ export class LayoutMainComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-
+    this.loaded = true;
   }
 
   openCreateUser() {

@@ -54,6 +54,11 @@ if (args.Contains("--typegen"))
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenLocalhost(57529, listenOptions => listenOptions.UseHttps());
+});
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -94,8 +99,11 @@ builder.Services.AddControllers(options =>
 {
     options.OutputFormatters.Add(new GeneralOutputFormatter());
 })
-.AddNewtonsoftJson();
-
+.AddNewtonsoftJson(options =>
+   {
+       // Force Newtonsoft to recognize unassigned DateTimes as UTC and append 'Z'
+       options.SerializerSettings.DateTimeZoneHandling = Newtonsoft.Json.DateTimeZoneHandling.Utc;
+   });
 builder.Services.AddScoped<IBaseManager, BaseManager>();
 
 // Configure Resend

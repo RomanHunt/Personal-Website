@@ -24,11 +24,12 @@
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
-      "launchUrl": "", //"swagger",
-      "applicationUrl": "https://localhost:7187;http://localhost:5111",
+      "launchUrl": "https://localhost:4200", //"swagger",
+      "applicationUrl": "https://localhost:4200;https://localhost:57529",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
+        "ASPNETCORE_URLS": "https://localhost:57529"
+        //"ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
       }
     },
     "IIS Express": {

@@ -420,7 +420,7 @@ namespace RomanHuntWebsite.Server
             int skipCount = model.PageNumber * pageSize;
 
             var chatMetadata = await _dataContext.Chats
-                .Where(o => o.IsActive && (o.IsPublic || o.ChatPermissions
+                .Where(o => o.IsActive && o.Id == model.ChatId && (o.IsPublic || o.ChatPermissions
                 .Any(p => p.IsActive || p.UserId == model.UserId)))
                 .Select(o => new 
                 { 
@@ -520,7 +520,7 @@ namespace RomanHuntWebsite.Server
             var sanitizer = new HtmlSanitizer();
             string scrubbedHtml = sanitizer.Sanitize(model.ChatMessageText);
 
-            var now = DateTime.Now;
+            var now = DateTime.UtcNow;
 
             if (model.ChatMessageId == null || model.ChatMessageId == 0)
             {
