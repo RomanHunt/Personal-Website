@@ -54,10 +54,15 @@ if (args.Contains("--typegen"))
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.WebHost.ConfigureKestrel(options =>
+// ONLY override Kestrel if running locally in development mode
+if (builder.Environment.IsDevelopment())
 {
-    options.ListenLocalhost(57529, listenOptions => listenOptions.UseHttps());
-});
+    builder.WebHost.ConfigureKestrel(options =>
+    {
+        options.ListenLocalhost(57529, listenOptions => listenOptions.UseHttps());
+    });
+}
+
 
 // Add services to the container.
 
