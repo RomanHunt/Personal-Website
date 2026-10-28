@@ -26,6 +26,7 @@ html, body {
 
 .min-vh-100 {
   height: 100vh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -78,6 +79,7 @@ html, body {
 .content-container {
   margin-top: 60px;
   height: calc(100vh - 60px); /* Strictly fills the exact remaining screen height */
+  height: calc(100dvh - 60px); /* Strictly fills the exact remaining screen height */
   overflow-y: auto;
   background-color: $primary-bg;
 }
@@ -264,6 +266,7 @@ $transition-speed: 0.3s ease-in-out;
 .sidebar-content {
   background-color: $primary-bg;
   height: calc(100vh - 286px);
+  height: calc(100dh - 286px);
   max-height: 100%;
   min-height: 0;
 }
@@ -492,12 +495,44 @@ $transition-speed: 0.3s ease-in-out;
   object-fit: cover; /* Ensures images scale cleanly without stretching */
 }
 
+.slideshow-grid-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  width: 100%;
+}
+
+// Force both child wrappers to share the exact same grid slot
+.slideshow-images,
+.slideshow-overlay-text {
+  grid-area: 1 / 1 / 2 / 2;
+}
 
 .user-avatar {
   width: 128px;
   height: 128px;
   border-radius: 50%;
   object-fit: cover;
+}
+
+// Controls stacking order without pulling elements out of the normal flow
+.slideshow-images {
+  z-index: 1;
+
+  .slide-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; // Ensures images scale nicely inside the grid area
+    display: block;
+  }
+}
+
+.slideshow-overlay-text {
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Adjust as needed (e.g., center) to position text vertically */
+  pointer-events: none; /* Allows user to click elements behind the text if necessary */
 }
 
 
@@ -546,6 +581,25 @@ $transition-speed: 0.3s ease-in-out;
       margin: 0;
       max-width: 100%;
   }
+
+  .about-paragraph{
+      font-size: 1.5em;
+      word-wrap: anywhere;
+  }
+
+  .home-text {
+    font-size: 2.5em;
+    -webkit-text-stroke: 1px $primary-bg;
+  }
+
+  .chat-message-list{
+      max-height: 100dvh;
+  }
+
+  .chat-modal{
+      max-height: 100dvh;
+  }
+
 }
 
 // --- Hamburger Button & CSS Animation ---
@@ -570,6 +624,7 @@ $transition-speed: 0.3s ease-in-out;
   left: 0;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   background-color: $primary-bg;
   z-index: 999;
   display: flex;
@@ -610,3 +665,30 @@ $transition-speed: 0.3s ease-in-out;
     }
   }
 }
+
+.chat-message-text {
+  min-width: 0 !important; /* CRITICAL for flex item text wrapping */
+  max-width: 100% !important;
+  box-sizing: border-box;
+  white-space: normal !important;
+  overflow-wrap: break-word !important;
+  word-break: normal !important;
+}
+
+  /* Because Encapsulation is None, this targets all elements inside the container */
+  .chat-message-text * {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    white-space: normal !important;
+    overflow-wrap: break-word !important;
+    word-break: normal !important;
+  }
+  
+  /* If your rich text editor outputs preformatted text or code blocks */
+  /*
+  .chat-message-text pre,
+  .chat-message-text code {
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
+  }
+  */

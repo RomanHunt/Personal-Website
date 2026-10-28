@@ -1,16 +1,18 @@
-import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, inject , HostListener} from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, inject , HostListener, ViewEncapsulation} from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators, UntypedFormControl, AbstractControl } from '@angular/forms';
 import { GeneralService } from '../../services/general.service';
 import * as Models from '../../../shared/models/models';
 import { AuthService, UserSession } from '../../services/auth.service';
 import { QuillEditorComponent } from 'ngx-quill';
+//import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 
 @Component({
   selector: 'app-chat-modal',
   templateUrl: './chat-modal.component.html',
   styles: [],
-  standalone: false
+  standalone: false,
+  encapsulation: ViewEncapsulation.None
 })
 export class ChatModalComponent implements OnInit {
   private cdr = inject(ChangeDetectorRef); 
@@ -47,7 +49,8 @@ export class ChatModalComponent implements OnInit {
     }
   };
 
-  constructor(private fb: UntypedFormBuilder, private generalSvc: GeneralService, private authService: AuthService){}
+  constructor(private fb: UntypedFormBuilder, private generalSvc: GeneralService, private authService: AuthService,
+    /*private sanitizer: DomSanitizer*/) { }
 
   ngOnInit() {
     this.model = this.fb.group({
@@ -203,7 +206,11 @@ export class ChatModalComponent implements OnInit {
       quillInstance.focus();
     }
   }
-
+  /*
+  sanitizeHtml(rawHtml: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(rawHtml);
+  }
+  */
   // Listen to the window resize event programmatically
   @HostListener('window:resize')
   onResize(): void {

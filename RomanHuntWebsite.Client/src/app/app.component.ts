@@ -48,7 +48,7 @@ export class AppComponent implements OnInit {
       isPublic: [true],
       userIds: this.fb.array([]),
     });
-    this.isCollapsed = this.userSession$.sidebarExpanded === "false" ? true : false;
+    this.isCollapsed = this.userSession$.sidebarExpanded === "true" ? false : true;
     this.loaded = true;
     this.cdr.detectChanges();
     this.loadSidebar();

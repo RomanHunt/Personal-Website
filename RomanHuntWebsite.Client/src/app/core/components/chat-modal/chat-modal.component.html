@@ -30,7 +30,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-9 col-6 p-3 text-start" [innerHtml]="message.text"></div>
+          <div class="col-lg-9 col-6 p-3 text-start text-wrap chat-message-text" [innerHtml]="message.text | safeHtml"></div>
         </div>
       </div>
     </div>
@@ -98,7 +98,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-9 col-6 p-3 text-start" [innerHtml]="message.text"></div>
+          <div class="col-lg-9 col-6 p-1 text-start text-wrap chat-message-text" [innerHtml]="message.text | safeHtml"></div>
         </div>
       </div>
 
@@ -142,10 +142,10 @@
 
       <div class="actions mobile-only">
         <!-- type="button" prevents it from accidentally submitting the form -->
-        <button class="user-menu-button w-75 m-3" type="button" (click)="close()">Close</button>
+        <button class="user-menu-button w-100 mx-0 mt-3 mb-2" type="button" (click)="close()">Close</button>
         <!-- disabled unless the form passes all your Validators.required checks -->
-        <button *ngIf="userId" class="ms-auto user-menu-button w-75 mx-3 mt-3" type="submit" [disabled]="model.invalid || confirming">Submit</button>
-        <span *ngIf="!userId ms-auto" class="">You must be logged in to post.</span>
+        <button *ngIf="userId" class="ms-auto user-menu-button w-100 mx-0 mt-3 mb-2" type="submit" [disabled]="model.invalid || confirming">Submit</button>
+        <div *ngIf="!userId" class="text-center mx-0 mb-2">You must be logged in to post.</div>
       </div>
 
     </div>

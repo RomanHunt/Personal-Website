@@ -12,7 +12,8 @@ import { LoginModalComponent } from './core/components/login-modal/login-modal.c
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ChatModalComponent } from './core/components/chat-modal/chat-modal.component';
 import { QuillModule } from 'ngx-quill'
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SafeHtmlPipe } from './safe-html-pipe'
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
     LayoutMainComponent,
     CreateUserModalComponent,
     LoginModalComponent,
-    ChatModalComponent
+    ChatModalComponent,
+    SafeHtmlPipe
   ],
   imports: [
     BrowserModule, HttpClientModule, ReactiveFormsModule,
@@ -28,7 +30,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
     RouterModule.forRoot(APP_ROUTES, { preloadingStrategy: PreloadAllModules }),
     FontAwesomeModule,
     QuillModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

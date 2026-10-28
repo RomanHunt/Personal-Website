@@ -34,7 +34,7 @@ export class AuthService {
     this.setCookie('userName', userName, 7);
 
     // Notify all subscribers of the new state
-    this.currentUserSubject.next({ userId, userName, sidebarExpanded: "true", chatFolderId: "1" });
+    this.currentUserSubject.next({ userId, userName, sidebarExpanded: "false", chatFolderId: "1" });
   }
 
   // Call this when logging out
@@ -43,7 +43,7 @@ export class AuthService {
     this.deleteCookie('userName');
 
     // Notify all subscribers that the user is gone
-    this.currentUserSubject.next({ userId: null, userName: null, sidebarExpanded: "true", chatFolderId: "1" });
+    this.currentUserSubject.next({ userId: null, userName: null, sidebarExpanded: "false", chatFolderId: "1" });
   }
 
   /*
