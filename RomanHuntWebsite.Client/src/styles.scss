@@ -361,6 +361,9 @@ html, body {
   box-sizing: border-box; /* Include padding in the height */
   background-color: $primary-bg;
   color: $primary-text;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .sidebar-list {

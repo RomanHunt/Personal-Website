@@ -548,6 +548,8 @@ namespace RomanHuntWebsite.Server
                     throw new ArgumentException("Chat not found");
                 }
 
+                existingChat.LastUpdated = now;
+
                 await _dataContext.SaveChangesAsync();
             }
             else
