@@ -27,7 +27,7 @@ export class ChatModalComponent implements OnInit {
   currentPage = 0;
   messages: Models.ChatMessage[] = [];
   totalMessages: number;
-  pageSize = 3;
+  pageSize = 20;
   mobileBreakpoint = 768; 
   isMobile: boolean;
 

@@ -68,7 +68,6 @@ export class AppComponent implements OnInit {
         this.users = result.userIds;
         this.folder = result.rootChatFolder;
         this.currentPanelMode = this.sidePanelModes.List;
-//        this.authService.setChatFolderId(result.rootChatFolder.chatFolderId.toString());
         this.sidebarLoaded = true;
         this.cdr.detectChanges();
       },

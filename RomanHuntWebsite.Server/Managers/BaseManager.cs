@@ -415,7 +415,7 @@ namespace RomanHuntWebsite.Server
 
         public async Task<General.GetChatReturn> GetChatAsync(General.GetChatSubmit model)
         {
-            int pageSize = 3;
+            int pageSize = 20;
             // Assuming pageNumber 0 is the first page (or latest messages)
             int skipCount = model.PageNumber * pageSize;
 
@@ -538,6 +538,16 @@ namespace RomanHuntWebsite.Server
                 };
 
                 _dataContext.ChatMessages.Add(newMessage);
+
+                var existingChat = await _dataContext.Chats
+                    .Where(o => o.IsActive && o.Id == model.ChatId)
+                    .FirstOrDefaultAsync();
+
+                if (existingChat == null)
+                {
+                    throw new ArgumentException("Chat not found");
+                }
+
                 await _dataContext.SaveChangesAsync();
             }
             else

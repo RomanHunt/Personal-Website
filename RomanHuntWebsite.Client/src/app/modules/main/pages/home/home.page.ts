@@ -24,9 +24,9 @@ export class HomePage implements OnInit, OnDestroy {
   loaded = false;
 
   images: string[] = [
-    "assets/images/Space_A.png",
-    "assets/images/Space_B.png",
-    "assets/images/Space_C.png",
+    "assets/images/Space_A.webp",
+    "assets/images/Space_B.webp",
+    "assets/images/Space_C.webp",
   ];
 
   private cdr = inject(ChangeDetectorRef);

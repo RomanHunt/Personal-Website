@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RomanHuntWebsite.Server.Data.Models;
 using System.Collections.Generic;
 using System.Reflection.Emit;
@@ -34,6 +35,24 @@ namespace RomanHuntWebsite.Server.Data
                 .WithMany()
                 .HasForeignKey(t => t.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // Converter to ensure DateTime is always treated as UTC when read from DB
+            var utcConverter = new ValueConverter<DateTime, DateTime>(
+                v => v,
+                v => DateTime.SpecifyKind(v, DateTimeKind.Utc));
+
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                foreach (var property in entityType.GetProperties())
+                {
+                    if (property.ClrType == typeof(DateTime) || property.ClrType == typeof(DateTime?))
+                    {
+                        property.SetValueConverter(utcConverter);
+                    }
+                }
+            }
+
+
         }
     }
 }
