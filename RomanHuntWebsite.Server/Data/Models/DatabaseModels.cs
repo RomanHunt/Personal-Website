@@ -54,7 +54,7 @@ namespace RomanHuntWebsite.Server.Data.Models
         public ICollection<ChatMessage> ChatMessages { get; set; } = new List<ChatMessage>();
         public ICollection<ChatPermission> ChatPermissions { get; set; } = new List<ChatPermission>();
         public byte[]? Avatar { get; set; }
-
+        public bool IsEmailConfirmed { get; set; }
 
     }
 

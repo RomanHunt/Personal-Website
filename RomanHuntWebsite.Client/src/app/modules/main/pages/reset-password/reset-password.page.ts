@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef, signal } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UntypedFormBuilder, UntypedFormGroup, Validators, UntypedFormControl, AbstractControl } from '@angular/forms';
 import * as Models from '../../../../shared/models/models';
@@ -17,6 +17,7 @@ export class ResetPasswordPage implements OnInit {
   confirming = false;
   responseMsg?: string;
   private cdr = inject(ChangeDetectorRef); 
+  hidePassword = signal(true);
 
 
   constructor(private route: ActivatedRoute, private fb: UntypedFormBuilder, private generalSvc: GeneralService) { }
@@ -27,7 +28,8 @@ export class ResetPasswordPage implements OnInit {
     });
 
     this.model = this.fb.group({
-      password: ['', Validators.required],
+      password: ['', Validators.required, Validators.minLength(12), Validators.maxLength(128)],
+      confirmPassword: [null, [Validators.required, Validators.minLength(12), Validators.maxLength(128)]],
     });
   }
 
@@ -37,7 +39,17 @@ export class ResetPasswordPage implements OnInit {
     return this.model.valid;
   }
 
+  togglePassword(): void {
+    this.hidePassword.update(value => !value);
+  }
+
   submitRequest() {
+
+    if (this.f.password.value !== this.f.confirmPassword.value) {
+      this.responseMsg = "Password confirmation must match";
+      return;
+    }
+
     this.confirming = true;
     this.responseMsg = undefined;
     const form: Models.ChangePasswordSubmit = {

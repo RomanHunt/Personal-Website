@@ -3,16 +3,16 @@
   <div class="d-flex">
     <button type="button" class="fa-solid fa-x ms-auto close-x" (click)="close()" aria-label="Close"></button>
   </div>
-  <h2>New User</h2>
+  <h2 class="text-center">New User</h2>
 
   <form [formGroup]="model" (ngSubmit)="submitRequest()" class="p-5">
     <div class="mb-5 row">
-        <label class="col-lg-4" for="userName">Username</label>
-        <input class="col-lg-8 user-input" id="userName"
-               type="text"
-               formControlName="userName"
-               placeholder="Enter Username"
-               required>
+      <label class="col-lg-4" for="userName">Username</label>
+      <input class="col-lg-8 user-input" id="userName"
+             type="text"
+             formControlName="userName"
+             placeholder="Enter Username"
+             required>
     </div>
     <div class="mb-5 row">
       <label class="col-lg-4" for="email">Email Address</label>
@@ -25,18 +25,39 @@
 
     <div class="mb-5 row">
       <label class="col-lg-4" for="password">Password</label>
-      <input class="col-lg-8 user-input" id="password"
-             type="password"
+      <input class="col-lg-7 user-input" id="password"
+             [type]="hidePassword() ? 'password' : 'text'"
              formControlName="password"
              placeholder="Enter Password"
              required>
+      <button class="col-lg-1 secondary-background primary-text" type="button" (click)="togglePassword()">
+        <i class="fa" [ngClass]="hidePassword() ? 'fa-eye-slash' : 'fa-eye'"></i>
+      </button>
     </div>
+
+    <div class="mb-5 row">
+      <label class="col-lg-4" for="confirmPassword">Confirm Password</label>
+      <input class="col-lg-8 user-input" id="confirmPassword"
+             type="password"
+             formControlName="confirmPassword"
+             placeholder="Confirm Password"
+             required>
+    </div>
+    <div class="text-center">
+      Passwords must have at least 12 characters.
+    </div>
+
 
     @if (errorMsg) {
     <div class="mb-3" style="color:orange">
       {{errorMsg}}
     </div>
     }
+
+    @if (accountCreated) {
+    <div class="mb-3">Please check your email for a link to activate your account.</div>
+    }
+
 
     <div class="actions row">
       <!-- type="button" prevents it from accidentally submitting the form -->

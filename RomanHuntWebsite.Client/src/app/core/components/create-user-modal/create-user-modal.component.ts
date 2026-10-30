@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, inject, signal } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators, UntypedFormControl, AbstractControl } from '@angular/forms';
 import { GeneralService } from '../../services/general.service';
 import * as Models from '../../../shared/models/models';
@@ -14,6 +14,8 @@ export class CreateUserModalComponent implements OnInit {
   confirming = false;
   model!: UntypedFormGroup;
   errorMsg?: string;
+  hidePassword = signal(true);
+  accountCreated: boolean;
 
   @ViewChild('dialogElement') dialog!: ElementRef<HTMLDialogElement>;
 
@@ -22,13 +24,15 @@ export class CreateUserModalComponent implements OnInit {
   ngOnInit() {
     this.model = this.fb.group({
       userName: [null, Validators.required],
-      password: [null, Validators.required],
+      password: [null, [Validators.required, Validators.minLength(12), Validators.maxLength(128)]],
+      confirmPassword: [null, [Validators.required, Validators.minLength(12), Validators.maxLength(128)]],
       email: [null, Validators.required]
     });
   }
 
   open() {
     this.dialog.nativeElement.showModal();
+    this.accountCreated = false;
   }
 
   close() {
@@ -47,8 +51,17 @@ export class CreateUserModalComponent implements OnInit {
     return this.model.valid;
   }
 
-  
+  togglePassword(): void {
+    this.hidePassword.update(value => !value);
+  }
+
   submitRequest() {
+
+    if (this.f.password.value !== this.f.confirmPassword.value) {
+      this.errorMsg = "Password confirmation must match";
+      return;
+    }
+
     this.confirming = true;
     this.errorMsg = undefined;
     const form: Models.NewUserSubmit = {
@@ -62,11 +75,11 @@ export class CreateUserModalComponent implements OnInit {
         this.confirming = false;
         if (result.successful === false) {
           this.errorMsg = result.responseMessage;
-          this.cdr.detectChanges();
         }
         else {
-          this.close();
+          this.accountCreated = true;
         }
+        this.cdr.detectChanges();
       },
       error: error => {
         this.confirming = false;

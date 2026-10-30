@@ -18,7 +18,7 @@
       <div *ngIf="!isCollapsed && !sidebarLoaded" class="justify-content-center align-items-center h-100 d-flex">
         <div class="spinner"></div>
       </div>
-      <div *ngIf="!isCollapsed && sidebarLoaded" class="sidebar-menu flex-fill">
+      <div *ngIf="!isCollapsed && sidebarLoaded" class="sidebar-menu">
         <div class="sidebar-content flex-fill p-2 d-flex flex-column">
           <div style="height:50px;">
             <h2 [title]="folder.chatFolderName">{{folder.chatFolderName}}</h2>

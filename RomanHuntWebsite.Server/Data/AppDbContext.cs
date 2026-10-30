@@ -32,7 +32,7 @@ namespace RomanHuntWebsite.Server.Data
 
             modelBuilder.Entity<PasswordResetToken>()
                 .HasOne(t => t.User)
-                .WithMany()
+                .WithMany(u => u.PasswordResetTokens)
                 .HasForeignKey(t => t.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 

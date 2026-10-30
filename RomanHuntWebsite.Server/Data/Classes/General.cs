@@ -64,6 +64,7 @@ namespace RomanHuntWebsite.Server.General
     {
         public string? Email { get; set; }
         public bool ForgotPassword { get; set; }
+        public bool AccountActivation { get; set; }
     }
 
     [ExportTsInterface]
@@ -84,8 +85,12 @@ namespace RomanHuntWebsite.Server.General
     {
         public string? ResponseMessage { get; set; }
     }
-    
-    /// 
+
+    [ExportTsInterface]
+    public class ActivateAccountReturn
+    {
+        public string? ResponseMessage { get; set; }
+    }
 
     [ExportTsInterface]
     public class GetChatFolderSubmit
@@ -109,7 +114,6 @@ namespace RomanHuntWebsite.Server.General
         }
     }
 
-    //
     [ExportTsInterface]
     public class CreateChatFolderSubmit
     {
@@ -123,14 +127,7 @@ namespace RomanHuntWebsite.Server.General
             this.AllowedUserIds = new List<int>();
         }
     }
-    /*
-        [ExportTsInterface]
-        public class CreateChatFolderReturn // Use GetChatFolderReturn instead, using the new ID
-        {
-
-        }
-        */
-
+  
     [ExportTsInterface]
     public class ChatFolderSummary
     {

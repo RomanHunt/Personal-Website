@@ -1,8 +1,9 @@
-import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectorRef, inject, signal } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators, UntypedFormControl, AbstractControl } from '@angular/forms';
 import { GeneralService } from '../../services/general.service';
 import * as Models from '../../../shared/models/models';
 import { AuthService, UserSession } from '../../services/auth.service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-login-modal',
@@ -17,6 +18,8 @@ export class LoginModalComponent implements OnInit {
   errorMsg?: string;
   emailMsg?: string;
   emailModel!: UntypedFormGroup;
+  hidePassword = signal(true);
+  private router = inject(Router)
 
   @ViewChild('dialogElement') dialog!: ElementRef<HTMLDialogElement>;
 
@@ -58,11 +61,16 @@ export class LoginModalComponent implements OnInit {
     return this.model.valid;
   }
 
+  togglePassword(): void {
+    this.hidePassword.update(value => !value);
+  }
+
   forgotUserName() {
     const form: Models.AccountEmailSubmit =
     {
       email: this.ef.email.value,
-      forgotPassword: false
+      forgotPassword: false,
+      accountActivation: false
     };
 
     this.sendEmail(form);
@@ -72,7 +80,19 @@ export class LoginModalComponent implements OnInit {
     const form: Models.AccountEmailSubmit =
     {
       email: this.ef.email.value,
-      forgotPassword: true
+      forgotPassword: true,
+      accountActivation: false
+    };
+    this.sendEmail(form);
+  }
+
+  activateAccount()
+  {
+    const form: Models.AccountEmailSubmit =
+    {
+      email: this.ef.email.value,
+      forgotPassword: false,
+      accountActivation: true
     };
     this.sendEmail(form);
   }
@@ -110,7 +130,7 @@ export class LoginModalComponent implements OnInit {
         else {
           this.authService.setSession(result.userId, result.userName);
           this.close();
-          window.location.reload();
+          this.router.navigate(['/home']);
         }
       },
       error: error => {

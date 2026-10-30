@@ -40,6 +40,12 @@ namespace RomanHuntWebsite.Server.Controllers.Api
             return await _baseManager.SendUserEmailAsync(model);
         }
 
+        [HttpGet("[action]/{token}")]
+        public async Task<ActivateAccountReturn> ActivateAccount(string token)
+        {
+            return await _baseManager.ActivateAccountAsync(token);
+        }
+
         [HttpPost("[action]")]
         public async Task<General.ChangePasswordReturn> ResetPassword(General.ChangePasswordSubmit model)
         {

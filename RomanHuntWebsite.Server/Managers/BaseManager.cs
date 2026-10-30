@@ -18,6 +18,7 @@ namespace RomanHuntWebsite.Server
         Task<General.NewUserReturn> SaveNewUserAsync(General.NewUserSubmit model);
         Task<General.LoginReturn> VerifyLoginAsync(General.LoginSubmit model);
         Task<General.AccountEmailReturn> SendUserEmailAsync(General.AccountEmailSubmit model);
+        Task<General.ActivateAccountReturn> ActivateAccountAsync(string token);
         Task<General.ChangePasswordReturn> ResetPasswordAsync(General.ChangePasswordSubmit model);
         Task<General.GetChatFolderReturn> GetChatFolderAsync(General.GetChatFolderSubmit model);
         Task<General.GetChatFolderReturn> CreateChatFolderAsync(CreateChatFolderSubmit model);
@@ -112,41 +113,59 @@ namespace RomanHuntWebsite.Server
                 };
             }
 
-            var existingMatch = await _dataContext.Users
-                .Where(o => o.IsActive && (o.Username == model.UserName || o.Email == model.Email))
-                .Select(o => new
-                {
-                    EmailMatch = o.Email == model.Email,
-                    UserNameMatch = o.Username == model.UserName
-                }).FirstOrDefaultAsync();
+            try
+            {
+                var existingMatch = await _dataContext.Users
+                    .Where(o => o.IsActive && (o.Username == model.UserName || o.Email == model.Email))
+                    .Select(o => new
+                    {
+                        EmailMatch = o.Email == model.Email,
+                        UserNameMatch = o.Username == model.UserName
+                    }).FirstOrDefaultAsync();
 
-            if (existingMatch != null)
+                if (existingMatch != null)
+                {
+                    return new General.NewUserReturn()
+                    {
+                        Successful = false,
+                        ResponseMessage = existingMatch.EmailMatch == true ? "Email address already in use" : "User name already exists"
+                    };
+                }
+
+                var newUser = new Data.Models.User()
+                {
+                    Email = model.Email ?? string.Empty,
+                    Username = model.UserName ?? string.Empty,
+                    IsActive = true,
+                    IsEmailConfirmed = false,
+                };
+
+                string hashedPassword = _passwordHasher.HashPassword(newUser, model.Password ?? string.Empty);
+                newUser.PasswordHash = hashedPassword;
+
+                _dataContext.Users.Add(newUser);
+                await _dataContext.SaveChangesAsync();
+
+                await SendUserEmailAsync(new AccountEmailSubmit()
+                {
+                    AccountActivation = true,
+                    Email = model.Email,
+                });
+
+                return new General.NewUserReturn()
+                {
+                    ResponseMessage = "User successfully saved. Check your email for an activation email.",
+                    Successful = true,
+                };
+            }
+            catch(Exception ex)
             {
                 return new General.NewUserReturn()
                 {
-                    Successful = false,
-                    ResponseMessage = existingMatch.EmailMatch == true ? "Email address already in use" : "User name already exists"
+                    ResponseMessage = ex.Message,
+                    Successful = false
                 };
             }
-
-            var newUser = new Data.Models.User()
-            {
-                Email = model.Email ?? string.Empty,
-                Username = model.UserName ?? string.Empty,
-                IsActive = true
-            };
-
-            string hashedPassword = _passwordHasher.HashPassword(newUser, model.Password ?? string.Empty);
-            newUser.PasswordHash = hashedPassword;
-
-            _dataContext.Users.Add(newUser);
-            await _dataContext.SaveChangesAsync();
-
-            return new General.NewUserReturn()
-            {
-                ResponseMessage = "User successfully saved. You may now log in.",
-                Successful = true,
-            };
         }
 
         public async Task<General.LoginReturn> VerifyLoginAsync(General.LoginSubmit model)
@@ -161,6 +180,12 @@ namespace RomanHuntWebsite.Server
             if (user == null)
             {
                 response.ResponseMessage = "Invalid username or password";
+                return response;
+            }
+
+            if (user.IsEmailConfirmed == false)
+            {
+                response.ResponseMessage = "Account email has not been confirmed yet. Please check your email or request a new confirmation email";
                 return response;
             }
 
@@ -194,7 +219,9 @@ namespace RomanHuntWebsite.Server
         {
             var response = new General.AccountEmailReturn()
             {
-                ResponseMessage = "If your email address is associated with an active account, an account recovery email will be sent to it shortly."
+                ResponseMessage = model.AccountActivation == false ?
+                    "If your email address is associated with an active account, an account recovery email will be sent to it shortly." :
+                    "An account activation email will be sent to the provided email address"
             };
 
             try
@@ -205,7 +232,7 @@ namespace RomanHuntWebsite.Server
 
                 if (match != null)
                 {
-                    if (model.ForgotPassword)
+                    if (model.ForgotPassword || model.AccountActivation)
                     {
                         // Send Forgot Password email
 
@@ -226,23 +253,25 @@ namespace RomanHuntWebsite.Server
                             UserId = match.Id,
                             TokenHash = tokenHash,
                             ExpiresAt = DateTime.Now.AddMinutes(30)
+                           
                         };
 
                         _dataContext.PasswordResetTokens.Add(newResetToken);
                         await _dataContext.SaveChangesAsync();
 
-                        //                        var url = $"<a href=\"{_configuration["Email:Domain"]}/reset-password?token={token}\">here</a>";
+                        var tokenType = model.ForgotPassword ? "reset-password" : "activate-account";
+                        var emailStr = model.ForgotPassword ? "reset your password" : "activate your account";
 
-                        var url = $"{_configuration["Email:Domain"]}/reset-password?token={token}";
+                        var url = $"{_configuration["Email:Domain"]}/{tokenType}?token={token}";
 
                         var message = new EmailMessage
                         {
                             From = _configuration["Email:From"] ?? string.Empty,
                             To = match.Email,
-                            Subject = "Reset password",
+                            Subject = model.ForgotPassword ? "Reset password" : "Activate account",
                             HtmlBody =
                                 "<p>Hello,</p>" +
-                                $"<p><a href=\"{url}\">Click here to reset your password</a>. The link will expire 30 minutes after this email was requested.</p>" +
+                                $"<p><a href=\"{url}\">Click here {emailStr}</a>. The link will expire 30 minutes after this email was requested.</p>" +
                                 "<p>If you did not request this email, you can ignore it.</p>",
                         };
 
@@ -268,6 +297,54 @@ namespace RomanHuntWebsite.Server
                         await _resend.EmailSendAsync(message);
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                response.ResponseMessage = ex.Message;
+            }
+
+            return response;
+        }
+
+        public async Task<General.ActivateAccountReturn> ActivateAccountAsync(string token)
+        {
+            var response = new General.ActivateAccountReturn()
+            {
+                ResponseMessage = "Account activation successful. You may now log in."
+            };
+
+            try
+            {
+                string tokenHash = Convert.ToHexString(
+                     SHA256.HashData(Encoding.UTF8.GetBytes(token)));
+
+                /*
+                var match = await _dataContext.PasswordResetTokens
+                    .Where(o => o.TokenHash == token && o.IsUsed == false && o.User.IsActive &&
+                        o.User.IsEmailConfirmed == false)
+                    .FirstOrDefaultAsync();
+                */
+                
+                var match = await _dataContext.PasswordResetTokens
+                    .Where(o => o.TokenHash == tokenHash && o.IsUsed == false && o.ExpiresAt > DateTime.Now && o.User.IsActive &&
+                        o.User.IsEmailConfirmed == false)
+                    .FirstOrDefaultAsync();
+                
+                if (match == null)
+                {
+                    response.ResponseMessage = "No matching valid token found. Try sending an account activation email again.";
+                    return response;
+                }
+
+                match.IsUsed = true;
+
+                var userMatch = await _dataContext.Users
+                    .Where(o => match.UserId == o.Id)
+                    .FirstOrDefaultAsync();
+
+                userMatch!.IsEmailConfirmed = true;
+
+                await _dataContext.SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -462,7 +539,7 @@ namespace RomanHuntWebsite.Server
                 {
                     Id = o.Id,
                     Text = o.Text, 
-                    LastUpdated = o.LastUpdated.AddYears(1000), // Years added for sci-fi flavor
+                    LastUpdated = o.LastUpdated, //.AddYears(1000), // Years added for sci-fi flavor
                     UserId = o.UserId,
                     UserName = o.UserName                    
                 }).ToList()            

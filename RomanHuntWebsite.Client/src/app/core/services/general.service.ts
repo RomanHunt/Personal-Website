@@ -35,6 +35,11 @@ export class GeneralService {
       this.apiBaseUrl + '/General/UserEmail', model);
   }
 
+  activateAccount(token: string): Observable<General.ActivateAccountReturn> {
+    return this.http.get<General.ActivateAccountReturn>(
+      this.apiBaseUrl + '/General/ActivateAccount/' + token);
+  }
+
   resetPassword(model: General.ChangePasswordSubmit): Observable<General.ChangePasswordReturn> {
     return this.http.post<General.ChangePasswordReturn>(
       this.apiBaseUrl + '/General/ResetPassword', model);
@@ -87,8 +92,4 @@ export class GeneralService {
     return this.http.post<General.SetAvatarReturn>(
       this.apiBaseUrl + '/General/UploadAvatar/' + userId + '/avatar', formData);
   }
-
-
-
-
 }

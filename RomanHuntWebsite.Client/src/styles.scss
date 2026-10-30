@@ -28,6 +28,10 @@ html, body {
     background-color: $primary-bg;
 }
 
+.secondary-background{
+    background-color: $secondary-bg;
+}
+
 .min-vh-100 {
   height: 100vh;
   height: 100dvh;
@@ -189,7 +193,7 @@ html, body {
 }
 
 .user-modal {
-  width: 500px;
+  width: 600px;
   border: solid 2px $primary-text;
   color: $primary-text;
   background-color: $primary-bg;

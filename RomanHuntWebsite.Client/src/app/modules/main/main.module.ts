@@ -8,6 +8,7 @@ import { ResumePage } from '../main/pages/resume/resume.page';
 import { ResetPasswordPage } from '../main/pages/reset-password/reset-password.page';
 import { UserSettingsPage } from '../main/pages/user-settings/user-settings.page';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ActivateAccountPage } from '../main/pages/activate-account/activate-account.page';
 
 const MODULE_ROUTES: Routes = [
   {
@@ -30,6 +31,9 @@ const MODULE_ROUTES: Routes = [
   },
   {
     path: 'user-settings', component: UserSettingsPage
+  },
+  {
+    path: 'activate-account', component: ActivateAccountPage
   }
 ];
 
@@ -40,7 +44,8 @@ const MODULE_ROUTES: Routes = [
     HomePage,
     ResumePage,
     ResetPasswordPage,
-    UserSettingsPage
+    UserSettingsPage,
+    ActivateAccountPage
   ],
   imports: [
     CommonModule,
@@ -53,7 +58,8 @@ const MODULE_ROUTES: Routes = [
     ContactPage,   
     ResumePage,
     ResetPasswordPage,
-    UserSettingsPage
+    UserSettingsPage,
+    ActivateAccountPage
   ]
 })
 export class MainModule { }
